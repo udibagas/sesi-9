@@ -19,6 +19,20 @@ class Product {
       return new Product(el.id, el.name, el.price, el.stock);
     });
   }
+
+  static async findById(productId) {
+    const { rows, rowCount } = await pool.query(
+      `SELECT * FROM "Products" WHERE id = $1`,
+      [productId]
+    );
+
+    if (!rowCount) {
+      throw new Error("Product nor found");
+    }
+
+    const { id, name, price, stock } = rows[0];
+    return new Product(id, name, price, stock);
+  }
 }
 
 module.exports = Product;

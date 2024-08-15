@@ -18,6 +18,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Action</th>
           </tr>
         </thead>
 
@@ -27,6 +28,9 @@
             <td><%= el.name %></td>
             <td><%= el.priceInRupiah %></td>
             <td><%= el.stock %></td>
+            <td style="text-align: center">
+              <a href="/products/buy/<%= el.id %>">Buy</a>
+            </td>
           </tr>
           <% }) %>
         </tbody>

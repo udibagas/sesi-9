@@ -54,8 +54,9 @@ class Order {
       FROM "Orders" o
       JOIN "Customers" c ON c.id = o."CustomerId"
       JOIN "Products" p ON p.id = o."ProductId"
+      ORDER BY "date" DESC
     `;
-    const { rows } = await pool.query(query);
+    const { rows, rowCount } = await pool.query(query);
 
     const orders = rows.map((el) => {
       return new Order(
@@ -82,6 +83,30 @@ class Order {
     });
 
     return orders;
+  }
+
+  static async create({ CustomerId, ProductId, qty }) {
+    const product = await Product.findById(ProductId);
+
+    const query = `
+      INSERT INTO "Orders" ("date", "CustomerId", "ProductId", "qty", "price", "totalAmount")
+      VALUES ($1, $2, $3, $4, $5, $6)
+    `;
+
+    const values = [
+      new Date(),
+      CustomerId,
+      ProductId,
+      Number(qty),
+      product.price,
+      Number(qty) * product.price,
+    ];
+
+    await pool.query(query, values);
+  }
+
+  static async remove(id) {
+    await pool.query(`DELETE FROM "Orders" WHERE id = $1`, [id]);
   }
 }
 

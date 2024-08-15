@@ -15,6 +15,7 @@
       <table border="1">
         <thead>
           <tr>
+            <th>No.</th>
             <th>Date</th>
             <th>Customer</th>
             <th>Product</th>
@@ -22,12 +23,14 @@
             <th>Base Price</th>
             <th>Price</th>
             <th>Total Amount</th>
+            <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
-          <% orders.forEach(el => { %>
+          <% orders.forEach((el, i) => { %>
           <tr>
+            <td><%= i + 1 %></td>
             <td><%= formatDate(el.date) %></td>
             <td><%= el.customer.title %> <%= el.customer.name %></td>
             <td><%= el.product.name %></td>
@@ -35,6 +38,9 @@
             <td><%= el.product.priceInRupiah %></td>
             <td><%= toRupiah(el.price) %></td>
             <td><%= toRupiah(el.totalAmount) %></td>
+            <td>
+              <a href="/orders/delete/<%= el.id %>">Delete</a>
+            </td>
           </tr>
           <% }) %>
         </tbody>
